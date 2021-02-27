@@ -63,7 +63,7 @@ def find_shell_scripts():
         magicBytes = magic.from_file(f)
         if "Bourne-Again shell script" in magicBytes and baseline < os.path.getmtime(f):
             with open('/tmp/scripts.txt', 'a') as scripttxt:
-                scripttxt.write("SHELL SCRIPT FOUND: " + f + " last modified: " + time.ctime(os.path.getmtime(f)) + "\n")
+                scripttxt.write(f + " last modified: " + time.ctime(os.path.getmtime(f)) + "\n")
                 scripttxt.write("\n")
 
     print("Done")
