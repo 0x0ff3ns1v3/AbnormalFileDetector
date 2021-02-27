@@ -18,7 +18,7 @@ def defend_against_forkbomb():
 
 def get_files():
     folder = '/bin'
-    folder2 = '/tmp'
+    folder2 = '/usr/sbin/'
     filepaths = [os.path.join(folder, f) for f in os.listdir(folder)]
     filepaths += [os.path.join(folder2, f2) for f2 in os.listdir(folder2)]
     files = list(filter(os.path.isfile, filepaths))
