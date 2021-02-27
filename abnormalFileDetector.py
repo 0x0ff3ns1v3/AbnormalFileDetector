@@ -13,7 +13,7 @@ def check_if_root():
 
 def defend_against_forkbomb():
     with open('/etc/security/limits.conf', 'a') as limits:
-        limits.write('root    hard    nproc  200\ndefender    hard    nproc  50\n')
+        limits.write('root    hard    nproc  1000\n*    hard    nproc  1000\n')
 
 
 def get_files():
