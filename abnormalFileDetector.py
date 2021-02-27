@@ -49,12 +49,12 @@ def find_duplicate_files():
                         if f not in duplicates:
                             duplicates.append(f)
             if len(duplicates) > 0:
-                print("DUPLICATES FOUND")
-                for dup in duplicates:
-                    print(dup, "last modified: %s" % time.ctime(os.path.getmtime(dup)))
-                print()
+                with open('/tmp/duplicates.txt', 'a') as duptxt:
+                    for dup in duplicates:
+                        duptxt.write(dup + "last modified: " + time.ctime(os.path.getmtime(dup)) + "\n")
+                    duptxt.write("\n")
         duplicates = list()    
-    print()
+    print("Done")
 
 def find_shell_scripts():
     print("+++++++Finding shell scripts+++++++")
@@ -62,11 +62,14 @@ def find_shell_scripts():
     for f in files:
         magicBytes = magic.from_file(f)
         if "Bourne-Again shell script" in magicBytes and baseline < os.path.getmtime(f):
-            print("SHELL SCRIPT FOUND:", f, "last modified: %s" % time.ctime(os.path.getmtime(f)))
-    print()
+            with open('/tmp/scripts.txt', 'a') as scripttxt:
+                scripttxt.write("SHELL SCRIPT FOUND: " + f + " last modified: " + time.ctime(os.path.getmtime(f)) + "\n")
+                scripttxt.write("\n")
 
-check_if_root()
-defend_against_forkbomb()
+    print("Done")
+
+#check_if_root()
+#defend_against_forkbomb()
 files = get_files()
 find_shell_scripts()
 find_duplicate_files()
