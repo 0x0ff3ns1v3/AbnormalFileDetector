@@ -11,6 +11,10 @@ def check_if_root():
     else:
         print("Good Root")
 
+def defend_against_forkbomb():
+    with open('/etc/security/limits.conf', 'a') as limits:
+        limits.write('root    hard    nproc  5000\ndefender    hard    nproc  5000\n')
+
 
 def get_files():
     folder = '/bin'
@@ -52,6 +56,7 @@ def find_shell_scripts():
     print()
 
 check_if_root()
+defend_against_forkbomb()
 files = get_files()
 find_shell_scripts()
 find_duplicate_files()
