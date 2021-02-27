@@ -29,7 +29,7 @@ def get_files():
 def find_duplicate_files():
     print("+++++++Finding duplicate files+++++++")
     baseline = os.path.getmtime('/home/')
-    BLOCK_SIZE = 256
+    BLOCK_SIZE = 128
     checked = list()
     for f in files:
         checked.append(f)
