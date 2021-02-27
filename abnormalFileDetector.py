@@ -68,8 +68,8 @@ def find_shell_scripts():
 
     print("Done")
 
-#check_if_root()
-#defend_against_forkbomb()
+check_if_root()
+defend_against_forkbomb()
 files = get_files()
 find_shell_scripts()
 find_duplicate_files()
