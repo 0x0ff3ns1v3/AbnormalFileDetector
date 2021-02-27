@@ -17,11 +17,12 @@ def defend_against_forkbomb():
 
 
 def get_files():
-    folder = '/bin'
-    folder2 = '/usr/sbin/'
-    filepaths = [os.path.join(folder, f) for f in os.listdir(folder)]
-    filepaths += [os.path.join(folder2, f2) for f2 in os.listdir(folder2)]
-    files = list(filter(os.path.isfile, filepaths))
+    folders = ["/bin", "/usr/sbin", "/usr/bin", "/sbin"]
+    filepaths = list()
+    files = list()
+    for folder in folders:
+        filepaths += [os.path.join(folder, f) for f in os.listdir(folder)]
+        files += list(filter(os.path.isfile, filepaths))
     return files
 
 
@@ -29,10 +30,10 @@ def find_duplicate_files():
     print("+++++++Finding duplicate files+++++++")
     baseline = os.path.getmtime('/home/')
     BLOCK_SIZE = 256
-    checked = ''
+    checked = list()
     for f in files:
+        checked.append(f)
         if baseline < os.path.getmtime(f):
-            checked += f
             with open(f, 'rb') as fo:
                 fb = fo.read(BLOCK_SIZE)
                 fileHash = hashlib.md5(fb)
@@ -42,8 +43,17 @@ def find_duplicate_files():
                         fb2 = fo2.read(BLOCK_SIZE)
                         fileHash2 = hashlib.md5(fb2)
                     if fileHash.digest() == fileHash2.digest():
-                        if f2 != f:
-                            print("DUPLICATE FOUND", f, "last modified: %s" % time.ctime(os.path.getmtime(f)), f2, "last modified: %s" % time.ctime(os.path.getmtime(f2)))
+                        if f2 != f:  
+                            checked.append(f2)
+                            duplicates.append(f2)
+                        if f not in duplicates:
+                            duplicates.append(f)
+            if len(duplicates) > 0:
+                print("DUPLICATES FOUND")
+                for dup in duplicates:
+                    print(dup, "last modified: %s" % time.ctime(os.path.getmtime(dup)))
+                print()
+        duplicates = list()    
     print()
 
 def find_shell_scripts():
